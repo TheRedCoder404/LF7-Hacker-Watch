@@ -2,32 +2,19 @@
 
 #include <Arduino.h>
 
-#include "Display.h"
-#include "Encoder.h"
+#include "Program.h"
 
-const uint8_t rotarySw = D10;
-const uint8_t rotaryDt = D9;
-const uint8_t rotaryClk = D8;
-static Encoder encoder(rotaryDt, rotaryClk);
-
-long rotaryState = -999;
-bool pressed = false;
-volatile bool toBePressed = false;
-
-static Display display;
+Program *program;
 
 void setup() {
-    display = Display();
+    program = new Program();
 
-    pinMode(rotarySw, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(rotarySw), onRotarySwitch, FALLING);
-
-    display.print("Hello World");
-    display.setCursor(12, 0);
-    display.print("fals");
+    onDisplayChange();
 }
 
 void loop() {
+    program->loop();
+
     if (toBePressed) {
         static uint32_t lastPressTime = 0;
         uint32_t now = millis();
@@ -60,7 +47,4 @@ void onDisplayChange() {
     display.print("Hello World");
     display.setCursor(12, 0);
     display.print(pressed ? "fals" : "true");
-    display.setCursor(0, 1);
-    display.print("rota: ");
-    display.print(rotaryState);
 }

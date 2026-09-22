@@ -2,12 +2,8 @@
 
 #include <Arduino.h>
 
-#include "LiquidCrystal.h"
+#include "Display.h"
 #include "Encoder.h"
-
-constexpr int rs = D5, en = D6, d4 = D0, d5 = D1, d6 = D2, d7 = D3;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-
 
 const uint8_t rotarySw = D10;
 const uint8_t rotaryDt = D9;
@@ -18,14 +14,17 @@ long rotaryState = -999;
 bool pressed = false;
 volatile bool toBePressed = false;
 
+static Display display;
+
 void setup() {
+    display = Display();
+
     pinMode(rotarySw, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(rotarySw), onRotarySwitch, FALLING);
 
-    lcd.begin(16, 2);
-    lcd.print("Hello World");
-    lcd.setCursor(12, 0);
-    lcd.print("fals");
+    display.print("Hello World");
+    display.setCursor(12, 0);
+    display.print("fals");
 }
 
 void loop() {
@@ -56,12 +55,12 @@ void IRAM_ATTR onRotarySwitch() {
 }
 
 void onDisplayChange() {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Hello World");
-    lcd.setCursor(12, 0);
-    lcd.print(pressed ? "fals" : "true");
-    lcd.setCursor(0, 1);
-    lcd.print("rota: ");
-    lcd.print(rotaryState);
+    display.clear();
+    display.setCursor(0, 0);
+    display.print("Hello World");
+    display.setCursor(12, 0);
+    display.print(pressed ? "fals" : "true");
+    display.setCursor(0, 1);
+    display.print("rota: ");
+    display.print(rotaryState);
 }

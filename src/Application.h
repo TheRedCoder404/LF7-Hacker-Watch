@@ -1,10 +1,38 @@
 #pragma once
 
+#include "Display.h"
+
 class Application {
 public:
     void updateDisplay();
-    void setUpdateDisplay(void (*callback)());
+    void loop();
+    void onScrollUp();
+    void onScrollDown();
+    void onRotaryButtonPressed();
+    void onRotaryButtonReleased();
+    void onButtonPressed();
+    void onButtonReleased();
+
+    void setUpdateDisplay(void (*callback)(Display& display));
+    void setLoop(void (*callback)());
+    void setOnScrollUp(void (*callback)());
+    void setOnScrollDown(void (*callback)());
+    void setOnRotaryButtonPressed(void (*callback)());
+    void setOnRotaryButtonReleased(void (*callback)());
+    void setOnButtonPressed(void (*callback)());
+    void setOnButtonReleased(void (*callback)());
+
+    void setDisplay(Display* display);
 
 private:
-    static void (*m_updateDisplay)();
+    void (*m_updateDisplay)(Display& display) = nullptr;
+    void (*m_loop)() = nullptr;
+    void (*m_onScrollUp)() = nullptr;
+    void (*m_onScrollDown)() = nullptr;
+    void (*m_onRotaryButtonPressed)() = nullptr;
+    void (*m_onRotaryButtonReleased)() = nullptr;
+    void (*m_onButtonPressed)() = nullptr;
+    void (*m_onButtonReleased)() = nullptr;
+
+    Display* m_display = nullptr;
 };

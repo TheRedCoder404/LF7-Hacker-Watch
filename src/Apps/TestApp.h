@@ -1,20 +1,24 @@
 #pragma once
 
 #include "Application.h"
-#include "Display.h"
 
 class TestApp {
 public:
-    TestApp();
-    TestApp(Display& display)
-        : m_display(display) {}
+    TestApp() {
+        setup();
+    }
 
     void setup();
     Application& getApp();
 
 private:
     Application m_app;
-    Display& m_display;
+    static bool pressed;
+    static int scroll;
 
-    static void updateDisplay();
+    static void loop();
+    static void onUpdateDisplay(Display& display);
+    static void onScrollUp();
+    static void onScrollDown();
+    static void onRotaryButtonPressed();
 };

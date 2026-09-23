@@ -8,12 +8,12 @@ class WindowManager {
     static constexpr int RELEASED_DELAY = 50;
 
 public:
-    WindowManager(Application& app)
-        : display()
+    explicit WindowManager(Application& app)
+        : toBePressed(false)
+        , display()
         , currentApp(app)
         , lastApp(app)
-        , encoder(rotaryDt, rotaryClk)
-        , toBePressed(false) {
+        , encoder(rotaryDt, rotaryClk) {
         currentApp.setDisplay(&display);
         setup();
     }

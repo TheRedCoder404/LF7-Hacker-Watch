@@ -1,20 +1,18 @@
 #pragma once
 
 #include "WindowManager.h"
-#include "Apps/TestApp.h"
+#include "Apps/Apps.h"
 
 class Program {
 public:
     Program()
-        : menu()
-        , windowManager(menu.getApp()) {
+        : windowManager(Apps::getTestApp().getApp()) {
         setup();
     }
 
     void loop();
 
 private:
-    TestApp menu;
     WindowManager windowManager;
 
     void setup();

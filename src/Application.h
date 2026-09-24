@@ -1,9 +1,14 @@
 #pragma once
 
+#include <utility>
+
 #include "Display.h"
 
 class Application {
 public:
+    Application(String name)
+        : name(std::move(name)) {}
+
     void updateDisplay();
     void loop();
     void onScrollUp();
@@ -23,6 +28,7 @@ public:
     void setOnButtonReleased(void (*callback)());
 
     void setDisplay(Display* display);
+    String getName();
 
 private:
     void (*m_updateDisplay)(Display& display) = nullptr;
@@ -35,4 +41,5 @@ private:
     void (*m_onButtonReleased)() = nullptr;
 
     Display* m_display = nullptr;
+    String name;
 };

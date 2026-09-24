@@ -89,3 +89,7 @@ void Application::setOnButtonReleased(void (*callback)()) {
 void Application::setDisplay(Display* display) {
     m_display = display;
 }
+
+String Application::getName() {
+    return name;
+}

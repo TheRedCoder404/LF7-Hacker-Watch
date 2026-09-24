@@ -2,22 +2,27 @@
 
 #include "Application.h"
 
-class TestApp {
+class AppSelector {
 public:
-    TestApp()
-        : m_app("Test App") {
-        setup();
+    AppSelector()
+        : app("App Selector") {
+        setUp();
     }
 
-    void setup();
+    void setUp();
     Application& getApp();
 
 private:
-    Application m_app;
+    static const String SELECTED_SYMBOL;
+    static const String NOT_SELECTED_SYMBOL;
+
+    Application app;
     static bool pressed;
     static int scroll;
+    static int viewScroll;
 
     static void onUpdateDisplay(Display& display);
+    static String getAppNameAt(int index);
     static void onScrollUp();
     static void onScrollDown();
     static void onRotaryButtonPressed();

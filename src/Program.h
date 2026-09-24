@@ -6,7 +6,7 @@
 class Program {
 public:
     Program()
-        : windowManager(Apps::getTestApp().getApp()) {
+        : windowManager(Apps::getAppSelector().getApp()) {
         setup();
     }
 

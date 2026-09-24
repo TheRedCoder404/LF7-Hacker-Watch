@@ -16,6 +16,7 @@ public:
         , encoder(rotaryDt, rotaryClk) {
         currentApp.setDisplay(&display);
         setup();
+        updateDisplay();
     }
 
     void setup();
@@ -34,6 +35,7 @@ private:
     const uint8_t button = D7;
 
     uint32_t lastPressed = 0;
+    uint32_t lastRotated = 0;
     long rotaryState = -999;
     bool rotaryButtonPressed = false;
     bool buttonPressed = false;

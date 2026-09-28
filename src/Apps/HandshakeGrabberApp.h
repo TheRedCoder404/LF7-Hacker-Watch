@@ -18,4 +18,5 @@ private:
     static void onScrollUp();
     static void onScrollDown();
     static void onRotaryButtonPressed();
+    static void onButtonPressed();
 };

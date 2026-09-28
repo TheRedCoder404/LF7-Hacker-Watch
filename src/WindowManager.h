@@ -13,7 +13,7 @@ public:
 
     void setup();
 
-    void updateDisplay();
+    static void updateDisplay();
     static void setCurrentApp(Application& app);
 
     void onRotarySwitchPressed();

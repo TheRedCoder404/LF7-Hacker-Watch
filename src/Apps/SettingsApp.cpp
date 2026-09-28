@@ -1,5 +1,8 @@
 #include "SettingsApp.h"
 
+#include "Apps.h"
+#include "WindowManager.h"
+
 int SettingsApp::scroll = 0;
 int SettingsApp::viewScroll = 0;
 
@@ -11,6 +14,7 @@ void SettingsApp::setup() {
     app.setOnScrollUp(&onScrollUp);
     app.setOnScrollDown(&onScrollDown);
     app.setOnRotaryButtonPressed(&onRotaryButtonPressed);
+    app.setOnButtonPressed(&onButtonPressed);
 }
 
 Application & SettingsApp::getApp() {
@@ -31,4 +35,8 @@ void SettingsApp::onScrollDown() {
 }
 
 void SettingsApp::onRotaryButtonPressed() {
+}
+
+void SettingsApp::onButtonPressed() {
+    WindowManager::setCurrentApp(Apps::getAppSelector().getApp());
 }

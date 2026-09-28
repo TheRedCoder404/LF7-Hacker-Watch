@@ -42,6 +42,7 @@ void WindowManager::onRotarySwitchPressed() {
 
 void WindowManager::loop() {
     encoder.loop();
+    currentApp->loop();
 
     if (toBeScrollUp) {
         toBeScrollUp = false;

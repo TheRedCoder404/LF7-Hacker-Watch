@@ -43,7 +43,6 @@ void Application::onRotaryButtonReleased() {
 void Application::onButtonPressed() {
     if (m_onButtonPressed != nullptr) {
         m_onButtonPressed();
-        updateDisplay();
     }
 }
 

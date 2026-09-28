@@ -1,19 +1,25 @@
 #pragma once
 
 #include "AppSelector.h"
-#include "TestApp.h"
+#include "HandshakeGrabberApp.h"
+#include "SettingsApp.h"
+#include "WifiCrackApp.h"
 
 class Apps {
 public:
-    static TestApp& getTestApp();
     static AppSelector& getAppSelector();
+    static WifiCrackApp& getWifiCrack();
+    static HandshakeGrabberApp& getHandshakeGrabber();
+    static SettingsApp& getSettings();
 
     static Application **getApps();
     static int getAppCount();
 
 private:
-    static TestApp testApp;
     static AppSelector appSelector;
+    static WifiCrackApp wifiCrack;
+    static HandshakeGrabberApp handshakeGrabber;
+    static SettingsApp settings;
 
     static Application *apps[];
 };

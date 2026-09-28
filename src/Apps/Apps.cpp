@@ -4,11 +4,11 @@ TestApp Apps::testApp = TestApp();
 AppSelector Apps::appSelector = AppSelector();
 Application *Apps::apps[] = {&testApp.getApp(), &appSelector.getApp()};
 
-TestApp Apps::getTestApp() {
+TestApp& Apps::getTestApp() {
     return testApp;
 }
 
-AppSelector Apps::getAppSelector() {
+AppSelector& Apps::getAppSelector() {
     return appSelector;
 }
 

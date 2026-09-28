@@ -5,8 +5,8 @@
 
 class Apps {
 public:
-    static TestApp getTestApp();
-    static AppSelector getAppSelector();
+    static TestApp& getTestApp();
+    static AppSelector& getAppSelector();
 
     static Application **getApps();
     static int getAppCount();

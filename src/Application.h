@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "Display.h"
+#include "Components/Display.h"
 
 class Application {
 public:

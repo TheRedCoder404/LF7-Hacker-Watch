@@ -14,6 +14,7 @@ void AppSelector::setUp() {
     app.setUpdateDisplay(&onUpdateDisplay);
     app.setOnScrollUp(&onScrollUp);
     app.setOnScrollDown(&onScrollDown);
+    app.setOnRotaryButtonPressed(&onRotaryButtonPressed);
 }
 
 Application & AppSelector::getApp() {
@@ -23,30 +24,50 @@ Application & AppSelector::getApp() {
 void AppSelector::onUpdateDisplay(Display &display) {
     display.clear();
 
-    if (scroll <= Apps::getAppCount()) {
+    if (viewScroll < Apps::getAppCount()) {
         display.setCursor(0, 0);
-        display.print(getAppNameAt(scroll));
+        display.print(getAppNameAt(viewScroll));
     }
 
-    if (scroll + 1 <= Apps::getAppCount()) {
+    if (viewScroll + 1 < Apps::getAppCount()) {
         display.setCursor(0, 1);
-        display.print(getAppNameAt(scroll + 1));
+        display.print(getAppNameAt(viewScroll + 1));
     }
 }
 
 String AppSelector::getAppNameAt(int index) {
+    if (index < 0 || index >= Apps::getAppCount()) {
+        return "";
+    }
+
     const String selected = index == scroll ? SELECTED_SYMBOL : NOT_SELECTED_SYMBOL;
     return selected + Apps::getApps()[index]->getName();
 }
 
 void AppSelector::onScrollUp() {
+    if (scroll < viewScroll) {
+        scrollViewUp();
+    }
+
     scroll--;
     Utility::clamp(scroll, 0, Apps::getAppCount() - 1);
 }
 
 void AppSelector::onScrollDown() {
+    if (scroll > viewScroll + 1) {
+        scrollViewDown();
+    }
+
     scroll++;
     Utility::clamp(scroll, 0, Apps::getAppCount() - 1);
+}
+
+void AppSelector::scrollViewUp() {
+    viewScroll--;
+}
+
+void AppSelector::scrollViewDown() {
+    viewScroll++;
 }
 
 void AppSelector::onRotaryButtonPressed() {

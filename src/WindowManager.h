@@ -1,37 +1,29 @@
 #pragma once
 
 #include "Application.h"
-#include "Display.h"
-#include "Encoder.h"
+#include "Components/Display.h"
+#include "Components/RotaryEncoder.h"
 
 class WindowManager {
     static constexpr int RELEASED_DELAY = 50;
 
 public:
     explicit WindowManager(Application& app)
-        : toBePressed(false)
-        , display()
-        , currentApp(app)
-        , lastApp(app)
-        , encoder(rotaryDt, rotaryClk) {
-        currentApp.setDisplay(&display);
-        setup();
-        updateDisplay();
-    }
+        : display()
+        , currentApp(&app)
+        , lastApp(nullptr)
+        , encoder() {}
 
     void setup();
 
     void updateDisplay();
-    void setCurrentApp(const Application& app);
+    void setCurrentApp(Application& app);
 
     void onRotarySwitchPressed();
 
     void loop();
 
 private:
-    const uint8_t rotarySw = D10;
-    const uint8_t rotaryDt = D9;
-    const uint8_t rotaryClk = D8;
     const uint8_t button = D7;
 
     uint32_t lastPressed = 0;
@@ -39,16 +31,22 @@ private:
     long rotaryState = -999;
     bool rotaryButtonPressed = false;
     bool buttonPressed = false;
-    volatile bool toBePressed;
+    volatile bool toBePressed = false;
+    static volatile bool toBeScrollUp;
+    static volatile bool toBeScrollDown;
 
     Display display;
-    Application& currentApp;
-    Application& lastApp;
-    Encoder encoder;
+    RotaryEncoder encoder;
+
+    Application* currentApp;
+    Application* lastApp;
 
     static void ARDUINO_ISR_ATTR rotarySwitchInterrupt(void *argument);
 
-    void checkRotaryEncoder();
+    static void onRotationUp();
+    static void onRotationDown();
+
+    void checkRotaryEncoder(int rotation);
     void checkRotaryEncoderButton();
     void checkButton();
 };

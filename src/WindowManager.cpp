@@ -1,19 +1,29 @@
 #include "WindowManager.h"
 
+#include "Apps/Apps.h"
+
+volatile bool WindowManager::toBeScrollUp = false;
+volatile bool WindowManager::toBeScrollDown = false;
+
 void WindowManager::setup() {
-    pinMode(rotarySw, INPUT_PULLUP);
     pinMode(button, INPUT);
 
-    attachInterruptArg(digitalPinToInterrupt(rotarySw), &WindowManager::rotarySwitchInterrupt, this, FALLING);
+    currentApp->setDisplay(&display);
+    encoder.setOnRotationUpCallback(&onRotationUp);
+    encoder.setOnRotationDownCallback(&onRotationDown);
+
+    updateDisplay();
 }
 
 void WindowManager::updateDisplay() {
-    currentApp.updateDisplay();
+    currentApp->updateDisplay();
 }
 
-void WindowManager::setCurrentApp(const Application& app) {
-    currentApp = app;
-    currentApp.setDisplay(&display);
+void WindowManager::setCurrentApp(Application& app) {
+    lastApp = currentApp;
+    currentApp = &app;
+    currentApp->setDisplay(&display);
+    currentApp->updateDisplay();
 }
 
 void WindowManager::onRotarySwitchPressed() {
@@ -21,7 +31,22 @@ void WindowManager::onRotarySwitchPressed() {
 }
 
 void WindowManager::loop() {
-    checkRotaryEncoder();
+    encoder.loop();
+
+    if (toBeScrollUp) {
+        toBeScrollUp = false;
+        if (currentApp != nullptr) {
+            currentApp->onScrollUp();
+        }
+    }
+
+    if (toBeScrollDown) {
+        toBeScrollDown = false;
+        if (currentApp != nullptr) {
+            currentApp->onScrollDown();
+        }
+    }
+
     checkRotaryEncoderButton();
     checkButton();
 }
@@ -31,19 +56,26 @@ void WindowManager::rotarySwitchInterrupt(void *argument) {
     manager->onRotarySwitchPressed();
 }
 
-void WindowManager::checkRotaryEncoder() {
-    const long currentRot = encoder.read();
-    if (currentRot == rotaryState) {
+void WindowManager::onRotationUp() {
+    toBeScrollUp = true;
+}
+
+void WindowManager::onRotationDown() {
+    toBeScrollDown = true;
+}
+
+void WindowManager::checkRotaryEncoder(int rotation) {
+    if (rotation == rotaryState) {
         return;
     }
 
-    if (currentRot < rotaryState) {
-        currentApp.onScrollUp();
+    if (rotation < rotaryState) {
+        currentApp->onScrollUp();
     } else {
-        currentApp.onScrollDown();
+        currentApp->onScrollDown();
     }
 
-    rotaryState = currentRot;
+    rotaryState = rotation;
 }
 
 void WindowManager::checkRotaryEncoderButton() {
@@ -55,24 +87,29 @@ void WindowManager::checkRotaryEncoderButton() {
     if (!rotaryButtonPressed) {
         rotaryButtonPressed = true;
         lastPressed = now;
-        currentApp.onRotaryButtonPressed();
+        currentApp->onRotaryButtonPressed();
     }
 
     if (now - lastPressed >= RELEASED_DELAY) {
 
         rotaryButtonPressed = false;
         toBePressed = false;
-        currentApp.onRotaryButtonReleased();
+        currentApp->onRotaryButtonReleased();
     }
 }
 
 void WindowManager::checkButton() {
     const bool isPressed = digitalRead(button);
-    if (isPressed) {
+
+    if (isPressed && !buttonPressed) {
         buttonPressed = true;
-        currentApp.onButtonPressed();
-    } else if (buttonPressed) {
+        if (currentApp != nullptr) {
+            currentApp->onButtonPressed();
+        }
+    } else if (!isPressed && buttonPressed) {
         buttonPressed = false;
-        currentApp.onButtonReleased();
+        if (currentApp != nullptr) {
+            currentApp->onButtonReleased();
+        }
     }
 }

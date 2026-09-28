@@ -25,5 +25,7 @@ private:
     static String getAppNameAt(int index);
     static void onScrollUp();
     static void onScrollDown();
+    static void scrollViewUp();
+    static void scrollViewDown();
     static void onRotaryButtonPressed();
 };

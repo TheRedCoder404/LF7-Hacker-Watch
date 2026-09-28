@@ -5,8 +5,19 @@
 volatile bool WindowManager::toBeScrollUp = false;
 volatile bool WindowManager::toBeScrollDown = false;
 
+Application* WindowManager::currentApp = &Apps::getAppSelector().getApp();
+Display WindowManager::display = Display();
+
 void WindowManager::setup() {
     pinMode(button, INPUT);
+    pinMode(rotaryButton, INPUT_PULLUP);
+
+    attachInterruptArg(
+        digitalPinToInterrupt(rotaryButton),
+        rotarySwitchInterrupt,
+        this,
+        FALLING
+    );
 
     currentApp->setDisplay(&display);
     encoder.setOnRotationUpCallback(&onRotationUp);
@@ -20,7 +31,6 @@ void WindowManager::updateDisplay() {
 }
 
 void WindowManager::setCurrentApp(Application& app) {
-    lastApp = currentApp;
     currentApp = &app;
     currentApp->setDisplay(&display);
     currentApp->updateDisplay();
@@ -87,14 +97,24 @@ void WindowManager::checkRotaryEncoderButton() {
     if (!rotaryButtonPressed) {
         rotaryButtonPressed = true;
         lastPressed = now;
-        currentApp->onRotaryButtonPressed();
+
+        Application* appBeforePress = currentApp;
+        if (appBeforePress != nullptr) {
+            appBeforePress->onRotaryButtonPressed();
+        }
+
+        if (currentApp != nullptr && currentApp != appBeforePress) {
+            currentApp->updateDisplay();
+        }
     }
 
     if (now - lastPressed >= RELEASED_DELAY) {
-
         rotaryButtonPressed = false;
         toBePressed = false;
-        currentApp->onRotaryButtonReleased();
+        
+        if (currentApp != nullptr) {
+            currentApp->onRotaryButtonReleased();
+        }
     }
 }
 

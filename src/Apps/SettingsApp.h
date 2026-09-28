@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Application.h"
+#include "Selector.h"
 
 class SettingsApp {
 public:
     SettingsApp()
-        : m_app("Settings") {
+        : app("Settings") {
         setup();
     }
 
@@ -13,7 +14,12 @@ public:
     Application& getApp();
 
 private:
-    Application m_app;
+    static const String settings[2];
+    static Selector selector;
+
+    Application app;
+    static int scroll;
+    static int viewScroll;
 
     static void onUpdateDisplay(Display& display);
     static void onScrollUp();

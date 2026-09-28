@@ -2,6 +2,7 @@
 
 #include "Apps.h"
 #include "Utility.h"
+#include "WindowManager.h"
 
 const String AppSelector::SELECTED_SYMBOL = "[x]";
 const String AppSelector::NOT_SELECTED_SYMBOL = "[ ]";
@@ -17,7 +18,7 @@ void AppSelector::setUp() {
     app.setOnRotaryButtonPressed(&onRotaryButtonPressed);
 }
 
-Application & AppSelector::getApp() {
+Application& AppSelector::getApp() {
     return app;
 }
 
@@ -45,21 +46,21 @@ String AppSelector::getAppNameAt(int index) {
 }
 
 void AppSelector::onScrollUp() {
+    scroll--;
+    Utility::clamp(scroll, 0, Apps::getAppCount() - 1);
+
     if (scroll < viewScroll) {
         scrollViewUp();
     }
-
-    scroll--;
-    Utility::clamp(scroll, 0, Apps::getAppCount() - 1);
 }
 
 void AppSelector::onScrollDown() {
+    scroll++;
+    Utility::clamp(scroll, 0, Apps::getAppCount() - 1);
+
     if (scroll > viewScroll + 1) {
         scrollViewDown();
     }
-
-    scroll++;
-    Utility::clamp(scroll, 0, Apps::getAppCount() - 1);
 }
 
 void AppSelector::scrollViewUp() {
@@ -71,7 +72,10 @@ void AppSelector::scrollViewDown() {
 }
 
 void AppSelector::onRotaryButtonPressed() {
-
+    Application* selectedApp = Apps::getApps()[scroll];
+    if (selectedApp != nullptr) {
+        WindowManager::setCurrentApp(*selectedApp);
+    }
 }
 
 

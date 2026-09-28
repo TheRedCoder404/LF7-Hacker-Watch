@@ -1,20 +1,33 @@
 #include "SettingsApp.h"
 
-void SettingsApp::setup() {
+int SettingsApp::scroll = 0;
+int SettingsApp::viewScroll = 0;
 
+const String SettingsApp::settings[] = {"Reset", "Full Reset"};
+Selector SettingsApp::selector = {settings};
+
+void SettingsApp::setup() {
+    app.setUpdateDisplay(&onUpdateDisplay);
+    app.setOnScrollUp(&onScrollUp);
+    app.setOnScrollDown(&onScrollDown);
+    app.setOnRotaryButtonPressed(&onRotaryButtonPressed);
 }
 
 Application & SettingsApp::getApp() {
-    return m_app;
+    return app;
 }
 
 void SettingsApp::onUpdateDisplay(Display &display) {
+    display.clear();
+    selector.onUpdateDisplay(display);
 }
 
 void SettingsApp::onScrollUp() {
+    selector.onScrollUp();
 }
 
 void SettingsApp::onScrollDown() {
+    selector.onScrollDown();
 }
 
 void SettingsApp::onRotaryButtonPressed() {

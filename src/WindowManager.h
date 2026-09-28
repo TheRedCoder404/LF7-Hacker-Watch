@@ -8,16 +8,13 @@ class WindowManager {
     static constexpr int RELEASED_DELAY = 50;
 
 public:
-    explicit WindowManager(Application& app)
-        : display()
-        , currentApp(&app)
-        , lastApp(nullptr)
-        , encoder() {}
+    explicit WindowManager()
+        : encoder() {}
 
     void setup();
 
     void updateDisplay();
-    void setCurrentApp(Application& app);
+    static void setCurrentApp(Application& app);
 
     void onRotarySwitchPressed();
 
@@ -25,6 +22,7 @@ public:
 
 private:
     const uint8_t button = D7;
+    const uint8_t rotaryButton = D10;
 
     uint32_t lastPressed = 0;
     uint32_t lastRotated = 0;
@@ -35,11 +33,10 @@ private:
     static volatile bool toBeScrollUp;
     static volatile bool toBeScrollDown;
 
-    Display display;
+    static Display display;
     RotaryEncoder encoder;
 
-    Application* currentApp;
-    Application* lastApp;
+    static Application* currentApp;
 
     static void ARDUINO_ISR_ATTR rotarySwitchInterrupt(void *argument);
 

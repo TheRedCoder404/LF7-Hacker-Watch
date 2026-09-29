@@ -25,19 +25,12 @@ Application &WifiCrackApp::getApp() {
 }
 
 void WifiCrackApp::loop() {
-    if (disconnectComplete) {
-        return;
-    }
-
-    if (!devicesDisconnected) {
-        scrollDisconnectTimings();
-        return;
-    }
-
-    if (devicesDisconnected) {
+    if (devicesDisconnected && !disconnectComplete) {
         loadingTimings();
         return;
     }
+
+    scrollDisconnectTimings();
 }
 
 void WifiCrackApp::scrollDisconnectTimings() {
@@ -53,7 +46,7 @@ void WifiCrackApp::scrollDisconnectTimings() {
         return;
     }
 
-    if (scrollPos < scrollMaxPos) {
+    if (scrollPos < (disconnectComplete ? scrollDisconnectedMaxPos : scrollMaxPos)) {
         if (mills - lastTiming < scrollDelay) {
             return;
         }
@@ -69,13 +62,15 @@ void WifiCrackApp::scrollDisconnectTimings() {
         scrollPos = 0;
         WindowManager::updateDisplay();
     }
-
 }
 
 void WifiCrackApp::loadingTimings() {
     const long mills = millis();
     if (disconnectLoadingProgress >= loadingMax) {
         disconnectComplete = true;
+        scrollPos = 0;
+        lastTiming = mills;
+        WindowManager::updateDisplay();
         return;
     }
 
@@ -89,20 +84,19 @@ void WifiCrackApp::loadingTimings() {
 }
 
 void WifiCrackApp::onUpdateDisplay(Display &display) {
+    display.clear();
+
     if (disconnectComplete) {
+        printDisconnected(display);
         return;
     }
-
-    display.clear();
 
     if (!devicesDisconnected) {
         printDisconnectDialog(display);
         return;
     }
 
-    if (devicesDisconnected) {
-        printDisconnected(display);
-    }
+    printDisconnecting(display);
 }
 
 void WifiCrackApp::printDisconnectDialog(Display &display) {
@@ -118,7 +112,7 @@ void WifiCrackApp::printDisconnectDialog(Display &display) {
     }
 }
 
-void WifiCrackApp::printDisconnected(Display &display) {
+void WifiCrackApp::printDisconnecting(Display &display) {
     display.setCursor(0, 0);
     display.print("Disconnecting:");
 
@@ -126,6 +120,13 @@ void WifiCrackApp::printDisconnected(Display &display) {
         display.setCursor(i, 1);
         display.print(".");
     }
+}
+
+void WifiCrackApp::printDisconnected(Display &display) {
+    display.setCursor(0, 0);
+    display.print("Disconnected:");
+    display.setCursor(0, 1);
+    display.print(String("Change to HandshakeGrab").substring(scrollPos, 16 + scrollPos));
 }
 
 void WifiCrackApp::onScrollUp() {

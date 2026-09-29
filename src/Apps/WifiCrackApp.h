@@ -21,6 +21,7 @@ private:
     static int disconnectLoadingProgress;
     static long lastTiming;
     static constexpr int scrollMaxPos = 10;
+    static constexpr int scrollDisconnectedMaxPos = 7;
     static constexpr int scrollDelay = 500;
     static constexpr int scrollCompleteDelay = 2000;
     static constexpr int loadingMax = 11;
@@ -31,6 +32,7 @@ private:
 
     static void onUpdateDisplay(Display& display);
     static void printDisconnectDialog(Display &display);
+    static void printDisconnecting(Display &display);
     static void printDisconnected(Display &display);
 
     static void onScrollUp();

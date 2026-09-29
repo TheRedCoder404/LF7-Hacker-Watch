@@ -3,7 +3,7 @@
 #include "Apps.h"
 #include "WindowManager.h"
 
-String HandshakeGrabberApp::appNames[] = {"OSI-Analyser"};
+String HandshakeGrabberApp::appNames[] = {"OSI-Analyser", "Binary-Analyser"};
 Selector HandshakeGrabberApp::selector = {appNames, true};
 
 void HandshakeGrabberApp::setup() {

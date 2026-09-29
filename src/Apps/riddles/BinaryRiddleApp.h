@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Application.h"
+#include "Selector.h"
+#include "Components/Display.h"
 
-class SystemAccessApp {
+class BinaryRiddleApp {
 public:
-    SystemAccessApp()
-        : app("System Access") {
+    BinaryRiddleApp()
+        : app("Binary-Analyser") {
         setup();
     }
 
@@ -14,10 +16,11 @@ public:
 
 private:
     Application app;
-    static bool hacked;
+    static Selector selector;
+    static const String blockText[5];
 
     static void onUpdateDisplay(Display& display);
-    static void onButtonPressed();
     static void onScrollUp();
     static void onScrollDown();
+    static void onButtonPressed();
 };

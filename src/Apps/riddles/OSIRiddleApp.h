@@ -7,7 +7,7 @@
 class OSIRiddleApp {
 public:
     OSIRiddleApp()
-        : m_app("OSI-Analyser") {
+        : app("OSI-Analyser") {
         setup();
     }
 
@@ -15,7 +15,7 @@ public:
     Application& getApp();
 
 private:
-    Application m_app;
+    Application app;
     static Selector selector;
     static const String blockText[5];
 

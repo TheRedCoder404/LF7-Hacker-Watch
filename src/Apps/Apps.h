@@ -5,6 +5,8 @@
 #include "SettingsApp.h"
 #include "SystemAccessApp.h"
 #include "WifiCrackApp.h"
+#include "riddles/BinaryRiddleApp.h"
+#include "riddles/OSIRiddleApp.h"
 
 class Apps {
 public:
@@ -13,6 +15,7 @@ public:
     static HandshakeGrabberApp& getHandshakeGrabber();
     static SettingsApp& getSettings();
     static OSIRiddleApp& getOSIRiddle();
+    static BinaryRiddleApp& getBinaryRiddle();
 
     static Application **getApps();
     static Application **getHandshakeApps();
@@ -25,6 +28,7 @@ private:
     static SystemAccessApp systemAccess;
     static SettingsApp settings;
     static OSIRiddleApp osiRiddle;
+    static BinaryRiddleApp binaryRiddle;
 
     static Application *apps[];
     static Application *handshakeApps[];

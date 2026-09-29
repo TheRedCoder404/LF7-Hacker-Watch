@@ -1,20 +1,20 @@
 #include "OSIRiddleApp.h"
 
-#include "Apps.h"
+#include "Apps/Apps.h"
 #include "WindowManager.h"
 
-const String OSIRiddleApp::blockText[] = {"OSI-Sequence", "1: Router", "2: Switch", "3: Request", "4: Cable"};
+const String OSIRiddleApp::blockText[] = {"OSI-Sequence:", "1: Router", "2: Switch", "3: Request", "4: Cable"};
 Selector OSIRiddleApp::selector = {blockText, false};
 
 void OSIRiddleApp::setup() {
-    m_app.setUpdateDisplay(&onUpdateDisplay);
-    m_app.setOnScrollUp(&onScrollUp);
-    m_app.setOnScrollDown(&onScrollDown);
-    m_app.setOnButtonPressed(&onButtonPressed);
+    app.setUpdateDisplay(&onUpdateDisplay);
+    app.setOnScrollUp(&onScrollUp);
+    app.setOnScrollDown(&onScrollDown);
+    app.setOnButtonPressed(&onButtonPressed);
 }
 
 Application &OSIRiddleApp::getApp() {
-    return m_app;
+    return app;
 }
 
 void OSIRiddleApp::onUpdateDisplay(Display &display) {

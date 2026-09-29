@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Application.h"
-#include "OSIRiddleApp.h"
 #include "ScrollingString.h"
 #include "Selector.h"
 

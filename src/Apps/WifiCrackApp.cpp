@@ -4,6 +4,7 @@
 #include "WindowManager.h"
 
 bool WifiCrackApp::selectedYes = false;
+bool WifiCrackApp::devicesDisconnected = false;
 int WifiCrackApp::scrollPos = 0;
 long WifiCrackApp::lastScrolled = 0;
 
@@ -20,6 +21,13 @@ Application &WifiCrackApp::getApp() {
 }
 
 void WifiCrackApp::loop() {
+    if (!devicesDisconnected) {
+        scrollDisconnectTimings();
+        return;
+    }
+}
+
+void WifiCrackApp::scrollDisconnectTimings() {
     const long mills = millis();
     if (scrollPos == 0) {
         if (mills - lastScrolled < scrollCompleteDelay) {
@@ -48,11 +56,19 @@ void WifiCrackApp::loop() {
         scrollPos = 0;
         WindowManager::updateDisplay();
     }
+
 }
 
 void WifiCrackApp::onUpdateDisplay(Display &display) {
     display.clear();
 
+    if (!devicesDisconnected) {
+        printDisconnectDialog(display);
+        return;
+    }
+}
+
+void WifiCrackApp::printDisconnectDialog(Display &display) {
     display.setCursor(0, 0);
     display.print(String("Disconnect nearby devices?").substring(scrollPos, 16 + scrollPos));
 
@@ -63,6 +79,11 @@ void WifiCrackApp::onUpdateDisplay(Display &display) {
     else {
         display.print("[ ]yes [X]no");
     }
+}
+
+void WifiCrackApp::printDisconnected(Display &display) {
+    display.setCursor(0, 0);
+    display.print("Disconnecting:");
 }
 
 void WifiCrackApp::onScrollUp() {

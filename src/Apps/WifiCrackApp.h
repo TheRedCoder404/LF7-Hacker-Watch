@@ -14,6 +14,7 @@ public:
 private:
     Application m_app;
     static bool selectedYes;
+    static bool devicesDisconnected;
     static int scrollPos;
     static long lastScrolled;
     static constexpr int scrollMaxPos = 10;
@@ -21,7 +22,12 @@ private:
     static constexpr int scrollCompleteDelay = 2000;
 
     static void loop();
+    static void scrollDisconnectTimings();
+
     static void onUpdateDisplay(Display& display);
+    static void printDisconnectDialog(Display &display);
+    static void printDisconnected(Display &display);
+
     static void onScrollUp();
     static void onScrollDown();
     static void onRotaryButtonPressed();

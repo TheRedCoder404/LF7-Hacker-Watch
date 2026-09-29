@@ -1,12 +1,11 @@
 #include "Apps.h"
 
-#include "WifiCrackApp.h"
-
 AppSelector Apps::appSelector = AppSelector();
 WifiCrackApp Apps::wifiCrack = WifiCrackApp();
 HandshakeGrabberApp Apps::handshakeGrabber = HandshakeGrabberApp();
+SystemAccessApp Apps::systemAccess = SystemAccessApp();
 SettingsApp Apps::settings = SettingsApp();
-Application *Apps::apps[] = {&wifiCrack.getApp(), &handshakeGrabber.getApp(), &settings.getApp()};
+Application *Apps::apps[] = {&wifiCrack.getApp(), &handshakeGrabber.getApp(), &systemAccess.getApp(), &settings.getApp()};
 
 AppSelector& Apps::getAppSelector() {
     return appSelector;

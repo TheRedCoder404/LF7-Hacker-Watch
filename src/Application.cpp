@@ -53,6 +53,13 @@ void Application::onButtonReleased() {
     }
 }
 
+void Application::onSelected() {
+    if (m_onSelected != nullptr) {
+        m_onSelected();
+        updateDisplay();
+    }
+}
+
 void Application::setUpdateDisplay(void (*callback)(Display& display)) {
     m_updateDisplay = callback;
 }
@@ -83,6 +90,10 @@ void Application::setOnButtonPressed(void (*callback)()) {
 
 void Application::setOnButtonReleased(void (*callback)()) {
     m_onButtonReleased = callback;
+}
+
+void Application::setOnSelected(void(*callback)()) {
+    m_onSelected = callback;
 }
 
 void Application::setDisplay(Display* display) {

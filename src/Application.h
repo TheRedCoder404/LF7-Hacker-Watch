@@ -17,6 +17,7 @@ public:
     void onRotaryButtonReleased();
     void onButtonPressed();
     void onButtonReleased();
+    void onSelected();
 
     void setUpdateDisplay(void (*callback)(Display& display));
     void setLoop(void (*callback)());
@@ -26,6 +27,7 @@ public:
     void setOnRotaryButtonReleased(void (*callback)());
     void setOnButtonPressed(void (*callback)());
     void setOnButtonReleased(void (*callback)());
+    void setOnSelected(void (*callback)());
 
     void setDisplay(Display* display);
     String getName();
@@ -39,6 +41,7 @@ private:
     void (*m_onRotaryButtonReleased)() = nullptr;
     void (*m_onButtonPressed)() = nullptr;
     void (*m_onButtonReleased)() = nullptr;
+    void (*m_onSelected)() = nullptr;
 
     Display* m_display = nullptr;
     String name;

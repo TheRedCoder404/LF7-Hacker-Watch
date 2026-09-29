@@ -10,6 +10,7 @@ public:
 
     void setup();
     Application& getApp();
+    static bool isDone();
 
 private:
     Application m_app;

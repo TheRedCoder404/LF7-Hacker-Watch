@@ -166,3 +166,7 @@ void WifiCrackApp::resetApp() {
     disconnectLoadingProgress = 0;
     lastTiming = 0;
 }
+
+bool WifiCrackApp::isDone() {
+    return disconnectComplete;
+}

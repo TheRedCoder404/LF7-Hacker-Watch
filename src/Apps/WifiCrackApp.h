@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Application.h"
+#include "ScrollingString.h"
 
 class WifiCrackApp {
 public:
@@ -14,21 +16,18 @@ public:
 
 private:
     Application m_app;
+    static ScrollingString scrollText;
     static bool selecting;
     static bool selectedYes;
     static bool devicesDisconnected;
     static bool disconnectComplete;
-    static int scrollPos;
     static int disconnectLoadingProgress;
     static long lastTiming;
-    static constexpr int scrollMaxPos = 10;
-    static constexpr int scrollDisconnectedMaxPos = 7;
-    static constexpr int scrollDelay = 500;
-    static constexpr int scrollCompleteDelay = 2000;
+    static constexpr int loadingDelay = 500;
     static constexpr int loadingMax = 11;
 
     static void loop();
-    static void scrollDisconnectTimings();
+    static void onSelected();
     static void loadingTimings();
 
     static void onUpdateDisplay(Display& display);

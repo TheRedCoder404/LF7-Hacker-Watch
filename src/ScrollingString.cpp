@@ -42,3 +42,9 @@ void ScrollingString::reset() {
 String ScrollingString::getTextSlice() {
     return scrollText.substring(scrollPos, 16 + scrollPos);
 }
+
+void ScrollingString::setText(const String &text) {
+    scrollText = text;
+    maxScrollPos = scrollText.length() - 16;
+    reset();
+}

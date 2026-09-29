@@ -12,12 +12,13 @@ public:
     void loop();
     void reset();
     String getTextSlice();
+    void setText(const String& text);
 
 private:
     String scrollText;
     int scrollPos = 0;
     long lastTiming = 0;
-    const int maxScrollPos;
+    int maxScrollPos;
     const int scrollDelay;
     const int scrollDoneDelay;
 };

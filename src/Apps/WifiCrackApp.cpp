@@ -3,16 +3,17 @@
 #include "Apps.h"
 #include "WindowManager.h"
 
+ScrollingString WifiCrackApp::scrollText = {"Disconnect nearby devices?", 500, 2000};
 bool WifiCrackApp::selecting = true;
 bool WifiCrackApp::selectedYes = false;
 bool WifiCrackApp::devicesDisconnected = false;
 bool WifiCrackApp::disconnectComplete = false;
-int WifiCrackApp::scrollPos = 0;
 int WifiCrackApp::disconnectLoadingProgress = 0;
 long WifiCrackApp::lastTiming = 0;
 
 void WifiCrackApp::setup() {
     m_app.setLoop(&loop);
+    m_app.setOnSelected(&onSelected);
     m_app.setOnScrollUp(&onScrollUp);
     m_app.setOnScrollDown(&onScrollDown);
     m_app.setUpdateDisplay(&onUpdateDisplay);
@@ -30,51 +31,23 @@ void WifiCrackApp::loop() {
         return;
     }
 
-    scrollDisconnectTimings();
+    scrollText.loop();
 }
 
-void WifiCrackApp::scrollDisconnectTimings() {
-    const long mills = millis();
-    if (scrollPos == 0) {
-        if (mills - lastTiming < scrollCompleteDelay) {
-            return;
-        }
-
-        lastTiming = mills;
-        scrollPos++;
-        WindowManager::updateDisplay();
-        return;
-    }
-
-    if (scrollPos < (disconnectComplete ? scrollDisconnectedMaxPos : scrollMaxPos)) {
-        if (mills - lastTiming < scrollDelay) {
-            return;
-        }
-
-        lastTiming = mills;
-        scrollPos++;
-        WindowManager::updateDisplay();
-        return;
-    }
-
-    if (mills - lastTiming >= scrollCompleteDelay) {
-        lastTiming = mills;
-        scrollPos = 0;
-        WindowManager::updateDisplay();
-    }
+void WifiCrackApp::onSelected() {
+    scrollText.reset();
 }
 
 void WifiCrackApp::loadingTimings() {
     const long mills = millis();
     if (disconnectLoadingProgress >= loadingMax) {
         disconnectComplete = true;
-        scrollPos = 0;
-        lastTiming = mills;
+        scrollText.setText("Change to HandshakeGrab");
         WindowManager::updateDisplay();
         return;
     }
 
-    if (mills - lastTiming < scrollDelay) {
+    if (mills - lastTiming < loadingDelay) {
         return;
     }
 
@@ -101,7 +74,7 @@ void WifiCrackApp::onUpdateDisplay(Display &display) {
 
 void WifiCrackApp::printDisconnectDialog(Display &display) {
     display.setCursor(0, 0);
-    display.print(String("Disconnect nearby devices?").substring(scrollPos, 16 + scrollPos));
+    display.print(scrollText.getTextSlice());
 
     display.setCursor(0, 1);
     if (selectedYes) {
@@ -126,7 +99,7 @@ void WifiCrackApp::printDisconnected(Display &display) {
     display.setCursor(0, 0);
     display.print("Disconnected:");
     display.setCursor(0, 1);
-    display.print(String("Change to HandshakeGrab").substring(scrollPos, 16 + scrollPos));
+    display.print(scrollText.getTextSlice());
 }
 
 void WifiCrackApp::onScrollUp() {
@@ -159,10 +132,10 @@ void WifiCrackApp::onButtonPressed() {
 }
 
 void WifiCrackApp::resetApp() {
+    scrollText.setText("Disconnect nearby devices?");
     selecting = true;
     selectedYes = false;
     devicesDisconnected = false;
-    scrollPos = 0;
     disconnectLoadingProgress = 0;
     lastTiming = 0;
 }

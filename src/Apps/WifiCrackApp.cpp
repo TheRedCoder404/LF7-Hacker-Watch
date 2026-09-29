@@ -3,10 +3,13 @@
 #include "Apps.h"
 #include "WindowManager.h"
 
+bool WifiCrackApp::selecting = true;
 bool WifiCrackApp::selectedYes = false;
 bool WifiCrackApp::devicesDisconnected = false;
+bool WifiCrackApp::disconnectComplete = false;
 int WifiCrackApp::scrollPos = 0;
-long WifiCrackApp::lastScrolled = 0;
+int WifiCrackApp::disconnectLoadingProgress = 0;
+long WifiCrackApp::lastTiming = 0;
 
 void WifiCrackApp::setup() {
     m_app.setLoop(&loop);
@@ -14,6 +17,7 @@ void WifiCrackApp::setup() {
     m_app.setOnScrollDown(&onScrollDown);
     m_app.setUpdateDisplay(&onUpdateDisplay);
     m_app.setOnButtonPressed(&onButtonPressed);
+    m_app.setOnRotaryButtonPressed(&onRotaryButtonPressed);
 }
 
 Application &WifiCrackApp::getApp() {
@@ -21,8 +25,17 @@ Application &WifiCrackApp::getApp() {
 }
 
 void WifiCrackApp::loop() {
+    if (disconnectComplete) {
+        return;
+    }
+
     if (!devicesDisconnected) {
         scrollDisconnectTimings();
+        return;
+    }
+
+    if (devicesDisconnected) {
+        loadingTimings();
         return;
     }
 }
@@ -30,41 +43,65 @@ void WifiCrackApp::loop() {
 void WifiCrackApp::scrollDisconnectTimings() {
     const long mills = millis();
     if (scrollPos == 0) {
-        if (mills - lastScrolled < scrollCompleteDelay) {
+        if (mills - lastTiming < scrollCompleteDelay) {
             return;
         }
 
-        lastScrolled = mills;
+        lastTiming = mills;
         scrollPos++;
         WindowManager::updateDisplay();
         return;
     }
 
     if (scrollPos < scrollMaxPos) {
-        if (mills - lastScrolled < scrollDelay) {
+        if (mills - lastTiming < scrollDelay) {
             return;
         }
 
-        lastScrolled = mills;
+        lastTiming = mills;
         scrollPos++;
         WindowManager::updateDisplay();
         return;
     }
 
-    if (mills - lastScrolled >= scrollCompleteDelay) {
-        lastScrolled = mills;
+    if (mills - lastTiming >= scrollCompleteDelay) {
+        lastTiming = mills;
         scrollPos = 0;
         WindowManager::updateDisplay();
     }
 
 }
 
+void WifiCrackApp::loadingTimings() {
+    const long mills = millis();
+    if (disconnectLoadingProgress >= loadingMax) {
+        disconnectComplete = true;
+        return;
+    }
+
+    if (mills - lastTiming < scrollDelay) {
+        return;
+    }
+
+    lastTiming = mills;
+    disconnectLoadingProgress++;
+    WindowManager::updateDisplay();
+}
+
 void WifiCrackApp::onUpdateDisplay(Display &display) {
+    if (disconnectComplete) {
+        return;
+    }
+
     display.clear();
 
     if (!devicesDisconnected) {
         printDisconnectDialog(display);
         return;
+    }
+
+    if (devicesDisconnected) {
+        printDisconnected(display);
     }
 }
 
@@ -84,6 +121,11 @@ void WifiCrackApp::printDisconnectDialog(Display &display) {
 void WifiCrackApp::printDisconnected(Display &display) {
     display.setCursor(0, 0);
     display.print("Disconnecting:");
+
+    for (int i = 0; i < disconnectLoadingProgress; i++) {
+        display.setCursor(i, 1);
+        display.print(".");
+    }
 }
 
 void WifiCrackApp::onScrollUp() {
@@ -95,8 +137,31 @@ void WifiCrackApp::onScrollDown() {
 }
 
 void WifiCrackApp::onRotaryButtonPressed() {
+    if (selecting) {
+        if (!selectedYes) {
+            onButtonPressed();
+            return;
+        }
+
+        selecting = !selectedYes;
+        devicesDisconnected = selectedYes;
+        lastTiming = millis();
+    }
 }
 
 void WifiCrackApp::onButtonPressed() {
+    if (!disconnectComplete) {
+        resetApp();
+    }
+
     WindowManager::setCurrentApp(Apps::getAppSelector().getApp());
+}
+
+void WifiCrackApp::resetApp() {
+    selecting = true;
+    selectedYes = false;
+    devicesDisconnected = false;
+    scrollPos = 0;
+    disconnectLoadingProgress = 0;
+    lastTiming = 0;
 }

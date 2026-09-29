@@ -22,21 +22,21 @@ void Selector::onUpdateDisplay(Display &display) {
 }
 
 void Selector::onScrollUp() {
+    scroll--;
+    Utility::clamp(scroll, 0, optionsSize - 1);
+
     if (scroll < viewScroll) {
         scrollViewUp();
     }
-
-    scroll--;
-    Utility::clamp(scroll, 0, 1);
 }
 
 void Selector::onScrollDown() {
+    scroll++;
+    Utility::clamp(scroll, 0, optionsSize - 1);
+
     if (scroll > viewScroll + 1) {
         scrollViewDown();
     }
-
-    scroll++;
-    Utility::clamp(scroll, 0, 1);
 }
 
 void Selector::scrollViewUp() {
@@ -52,6 +52,9 @@ String Selector::getFullOptionAt(int index) {
         return "";
     }
 
-    const String selected = index == scroll ? selectedSymbol : notSelectedSymbol;
+    String selected = "";
+    if (selectable) {
+        selected = index == scroll ? selectedSymbol : notSelectedSymbol;
+    }
     return selected + optionLabels[index];
 }

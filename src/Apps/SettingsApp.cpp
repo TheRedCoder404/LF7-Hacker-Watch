@@ -7,7 +7,7 @@ int SettingsApp::scroll = 0;
 int SettingsApp::viewScroll = 0;
 
 const String SettingsApp::settings[] = {"Reset", "Full Reset"};
-Selector SettingsApp::selector = {settings};
+Selector SettingsApp::selector = {settings, true};
 
 void SettingsApp::setup() {
     app.setUpdateDisplay(&onUpdateDisplay);

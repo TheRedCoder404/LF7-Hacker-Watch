@@ -5,7 +5,9 @@ WifiCrackApp Apps::wifiCrack = WifiCrackApp();
 HandshakeGrabberApp Apps::handshakeGrabber = HandshakeGrabberApp();
 SystemAccessApp Apps::systemAccess = SystemAccessApp();
 SettingsApp Apps::settings = SettingsApp();
+OSIRiddleApp Apps::osiRiddle = OSIRiddleApp();
 Application *Apps::apps[] = {&wifiCrack.getApp(), &handshakeGrabber.getApp(), &systemAccess.getApp(), &settings.getApp()};
+Application *Apps::handshakeApps[] = {&osiRiddle.getApp()};
 
 AppSelector& Apps::getAppSelector() {
     return appSelector;
@@ -23,8 +25,16 @@ SettingsApp & Apps::getSettings() {
     return settings;
 }
 
+OSIRiddleApp & Apps::getOSIRiddle() {
+    return osiRiddle;
+}
+
 Application **Apps::getApps() {
     return apps;
+}
+
+Application ** Apps::getHandshakeApps() {
+    return handshakeApps;
 }
 
 int Apps::getAppCount() {

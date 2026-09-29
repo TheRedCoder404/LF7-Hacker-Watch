@@ -3,45 +3,44 @@
 #include "Apps.h"
 #include "WindowManager.h"
 
-ScrollingString HandshakeGrabberApp::testText = {"this is a fantastic super test text", 500, 2000};
+String HandshakeGrabberApp::appNames[] = {"OSI-Analyser"};
+Selector HandshakeGrabberApp::selector = {appNames, true};
 
 void HandshakeGrabberApp::setup() {
-    m_app.setLoop(&loop);
-    m_app.setOnSelected(&onSelected);
-    m_app.setUpdateDisplay(&onUpdateDisplay);
-    m_app.setOnButtonPressed(&onButtonPressed);
-}
-
-void HandshakeGrabberApp::loop() {
-    testText.loop();
-}
-
-void HandshakeGrabberApp::onSelected() {
-    testText.reset();
+    app.setUpdateDisplay(&onUpdateDisplay);
+    app.setOnScrollUp(&onScrollUp);
+    app.setOnScrollDown(&onScrollDown);
+    app.setOnRotaryButtonPressed(&onRotaryButtonPressed);
+    app.setOnButtonPressed(&onButtonPressed);
 }
 
 Application &HandshakeGrabberApp::getApp() {
-    return m_app;
+    return app;
 }
 
 void HandshakeGrabberApp::onUpdateDisplay(Display &display) {
     display.clear();
 
-    if (!WifiCrackApp::isDone()) {
+    if (WifiCrackApp::isDone()) {
+        selector.onUpdateDisplay(display);
+    } else {
         display.setCursor(0, 0);
         display.print("Waiting for");
         display.setCursor(0, 1);
-        display.print(testText.getTextSlice());
+        display.print("Handshake...");
     }
 }
 
 void HandshakeGrabberApp::onScrollUp() {
+    selector.onScrollUp();
 }
 
 void HandshakeGrabberApp::onScrollDown() {
+    selector.onScrollDown();
 }
 
 void HandshakeGrabberApp::onRotaryButtonPressed() {
+    WindowManager::setCurrentApp(*Apps::getHandshakeApps()[selector.getCurrentSelected()]);
 }
 
 void HandshakeGrabberApp::onButtonPressed() {

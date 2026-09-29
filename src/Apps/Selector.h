@@ -7,8 +7,9 @@
 class Selector {
 public:
     template <size_t N>
-    Selector(const String (&options)[N])
-        : optionsSize(N)
+    Selector(const String (&options)[N], bool selection)
+        : selectable(selection)
+        , optionsSize(N)
         , optionLabels(options) {}
 
     int getCurrentSelected();
@@ -19,6 +20,7 @@ public:
 private:
     const String selectedSymbol = "[X]";
     const String notSelectedSymbol = "[ ]";
+    const bool selectable;
 
     int scroll = 0;
     int viewScroll = 0;

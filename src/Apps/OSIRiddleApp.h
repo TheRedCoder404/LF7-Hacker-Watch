@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Application.h"
-#include "OSIRiddleApp.h"
-#include "ScrollingString.h"
 #include "Selector.h"
+#include "Components/Display.h"
 
-class HandshakeGrabberApp {
+class OSIRiddleApp {
 public:
-    HandshakeGrabberApp()
-        : app("HandshakeGrab") {
+    OSIRiddleApp()
+        : m_app("OSI-Analyser") {
         setup();
     }
 
@@ -16,13 +15,12 @@ public:
     Application& getApp();
 
 private:
-    Application app;
-    static String appNames[];
+    Application m_app;
     static Selector selector;
+    static const String blockText[5];
 
     static void onUpdateDisplay(Display& display);
     static void onScrollUp();
     static void onScrollDown();
-    static void onRotaryButtonPressed();
     static void onButtonPressed();
 };

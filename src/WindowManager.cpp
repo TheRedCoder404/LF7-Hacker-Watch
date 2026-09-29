@@ -16,7 +16,7 @@ void WindowManager::setup() {
         digitalPinToInterrupt(rotaryButton),
         rotarySwitchInterrupt,
         this,
-        FALLING
+        RISING
     );
 
     currentApp->setDisplay(&display);

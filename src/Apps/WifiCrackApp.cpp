@@ -3,11 +3,14 @@
 #include "Apps.h"
 #include "WindowManager.h"
 
+bool WifiCrackApp::selectedYes = false;
 int WifiCrackApp::scrollPos = 0;
 long WifiCrackApp::lastScrolled = 0;
 
 void WifiCrackApp::setup() {
     m_app.setLoop(&loop);
+    m_app.setOnScrollUp(&onScrollUp);
+    m_app.setOnScrollDown(&onScrollDown);
     m_app.setUpdateDisplay(&onUpdateDisplay);
     m_app.setOnButtonPressed(&onButtonPressed);
 }
@@ -54,13 +57,20 @@ void WifiCrackApp::onUpdateDisplay(Display &display) {
     display.print(String("Disconnect nearby devices?").substring(scrollPos, 16 + scrollPos));
 
     display.setCursor(0, 1);
-    display.print("[X]yes [ ]no");
+    if (selectedYes) {
+        display.print("[X]yes [ ]no");
+    }
+    else {
+        display.print("[ ]yes [X]no");
+    }
 }
 
 void WifiCrackApp::onScrollUp() {
+    selectedYes = !selectedYes;
 }
 
 void WifiCrackApp::onScrollDown() {
+    selectedYes = !selectedYes;
 }
 
 void WifiCrackApp::onRotaryButtonPressed() {

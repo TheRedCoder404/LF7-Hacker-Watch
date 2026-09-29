@@ -13,6 +13,7 @@ public:
 
 private:
     Application m_app;
+    static bool selectedYes;
     static int scrollPos;
     static long lastScrolled;
     static constexpr int scrollMaxPos = 10;

@@ -21,6 +21,16 @@ void WifiCrackApp::setup() {
     m_app.setOnRotaryButtonPressed(&onRotaryButtonPressed);
 }
 
+void WifiCrackApp::reset() {
+    selecting = true;
+    selectedYes = false;
+    devicesDisconnected = false;
+    disconnectComplete = false;
+    disconnectLoadingProgress = 0;
+    lastTiming = 0;
+    scrollText.reset()
+}
+
 Application &WifiCrackApp::getApp() {
     return m_app;
 }

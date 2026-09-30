@@ -29,6 +29,15 @@ bool OSIRiddleApp::isDone() {
     return pinConfirmed;
 }
 
+void OSIRiddleApp::reset() {
+    scrolling = false;
+    confirmationEntered = false;
+    selectedYes = false;
+    pinConfirmed = false;
+    selector.reset();
+    scrollText.reset();
+}
+
 void OSIRiddleApp::loop() {
     if (scrolling) {
         scrollText.loop();

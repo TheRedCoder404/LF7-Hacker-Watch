@@ -35,6 +35,18 @@ void SettingsApp::onScrollDown() {
 }
 
 void SettingsApp::onRotaryButtonPressed() {
+    if (selector.getCurrentSelected() == 0) {
+        WifiCrackApp::reset();
+        OSIRiddleApp::reset();
+        BinaryRiddleApp::reset();
+        LogicRiddleApp::reset();
+        CodeRiddleApp::reset();
+        WindowManager::setCurrentApp(Apps::getAppSelector().getApp());
+    }
+
+    if (selector.getCurrentSelected() == 1) {
+        esp_restart();
+    }
 }
 
 void SettingsApp::onButtonPressed() {

@@ -14,6 +14,7 @@ public:
     void setup();
     Application& getApp();
     static bool isDone();
+    static void reset();
 
 private:
     Application app;

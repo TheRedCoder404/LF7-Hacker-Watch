@@ -34,6 +34,19 @@ bool CodeRiddleApp::isDone() {
     return done;
 }
 
+void CodeRiddleApp::reset() {
+    scrolling = false;
+    confirmationEntered = false;
+    selectedYes = false;
+    pinConfirmed = false;
+    done = false;
+    lastLoop = 0;
+    progress = 0;
+    currentPass = 0;
+    selector.reset();
+    scrollText.reset();
+}
+
 void CodeRiddleApp::loop() {
     if (pinConfirmed) {
         const long mills = millis();

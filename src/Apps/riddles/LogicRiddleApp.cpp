@@ -29,6 +29,15 @@ bool LogicRiddleApp::isDone() {
     return pinConfirmed;
 }
 
+void LogicRiddleApp::reset() {
+    scrolling = false;
+    confirmationEntered = false;
+    selectedYes = false;
+    pinConfirmed = false;
+    selector.reset();
+    scrollText.reset();
+}
+
 void LogicRiddleApp::loop() {
     if (scrolling) {
         scrollText.loop();

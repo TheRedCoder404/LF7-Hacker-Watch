@@ -29,6 +29,15 @@ bool BinaryRiddleApp::isDone() {
     return pinConfirmed;
 }
 
+void BinaryRiddleApp::reset() {
+    scrolling = false;
+    confirmationEntered = false;
+    selectedYes = false;
+    pinConfirmed = false;
+    selector.reset();
+    scrollText.reset();
+}
+
 void BinaryRiddleApp::loop() {
     if (scrolling) {
         scrollText.loop();

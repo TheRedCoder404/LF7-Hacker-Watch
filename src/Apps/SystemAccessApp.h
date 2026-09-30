@@ -14,10 +14,7 @@ public:
 
 private:
     Application app;
-    static bool hacked;
 
     static void onUpdateDisplay(Display& display);
     static void onButtonPressed();
-    static void onScrollUp();
-    static void onScrollDown();
 };

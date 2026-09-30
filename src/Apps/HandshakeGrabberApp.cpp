@@ -21,6 +21,15 @@ Application &HandshakeGrabberApp::getApp() {
 void HandshakeGrabberApp::onUpdateDisplay(Display &display) {
     display.clear();
 
+    if (CodeRiddleApp::isDone()) {
+        display.setCursor(0, 0);
+        display.print("Handshake");
+        display.setCursor(0, 1);
+        display.print("decrypted!");
+
+        return;
+    }
+
     if (WifiCrackApp::isDone()) {
         selector.onUpdateDisplay(display);
     } else {

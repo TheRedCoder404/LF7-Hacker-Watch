@@ -3,13 +3,9 @@
 #include "Apps.h"
 #include "WindowManager.h"
 
-bool SystemAccessApp::hacked = false;
-
 void SystemAccessApp::setup() {
     app.setUpdateDisplay(&onUpdateDisplay);
     app.setOnButtonPressed(&onButtonPressed);
-    app.setOnScrollUp(&onScrollUp);
-    app.setOnScrollDown(&onScrollDown);
 }
 
 Application& SystemAccessApp::getApp() {
@@ -19,7 +15,7 @@ Application& SystemAccessApp::getApp() {
 void SystemAccessApp::onUpdateDisplay(Display &display) {
     display.clear();
 
-    if (hacked) {
+    if (CodeRiddleApp::isDone()) {
         display.setCursor(0, 0);
         display.print("MASTER PASSWORD:");
         display.setCursor(0, 1);
@@ -33,12 +29,4 @@ void SystemAccessApp::onUpdateDisplay(Display &display) {
 
 void SystemAccessApp::onButtonPressed() {
     WindowManager::setCurrentApp(Apps::getAppSelector().getApp());
-}
-
-void SystemAccessApp::onScrollUp() {
-    hacked = !hacked;
-}
-
-void SystemAccessApp::onScrollDown() {
-    hacked = !hacked;
 }

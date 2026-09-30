@@ -49,6 +49,9 @@ void HandshakeGrabberApp::onScrollDown() {
 }
 
 void HandshakeGrabberApp::onRotaryButtonPressed() {
+    if (CodeRiddleApp::isDone()) {
+        return;
+    }
     WindowManager::setCurrentApp(*Apps::getHandshakeApps()[selector.getCurrentSelected()]);
 }
 

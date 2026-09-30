@@ -39,12 +39,23 @@ void BinaryRiddleApp::reset() {
 }
 
 void BinaryRiddleApp::loop() {
-    if (scrolling) {
+    if (scrolling && !isDone()) {
         scrollText.loop();
     }
 }
 
 void BinaryRiddleApp::onUpdateDisplay(Display &display) {
+    if (isDone()) {
+        display.clear();
+
+        display.setCursor(0, 0);
+        display.print("Binary-Sequence");
+        display.setCursor(0, 1);
+        display.print("already cleared");
+
+        return;
+    }
+
     if (!OSIRiddleApp::isDone()) {
         display.clear();
 
@@ -104,6 +115,10 @@ void BinaryRiddleApp::onButtonPressed() {
 }
 
 void BinaryRiddleApp::onRotaryButtonPressed() {
+    if (isDone()) {
+        return;
+    }
+
     if (!confirmationEntered) {
         confirmationEntered = true;
         scrolling = true;

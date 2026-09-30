@@ -39,12 +39,23 @@ void OSIRiddleApp::reset() {
 }
 
 void OSIRiddleApp::loop() {
-    if (scrolling) {
+    if (scrolling && !isDone()) {
         scrollText.loop();
     }
 }
 
 void OSIRiddleApp::onUpdateDisplay(Display &display) {
+    if (isDone()) {
+        display.clear();
+
+        display.setCursor(0, 0);
+        display.print("OSI-Sequence");
+        display.setCursor(0, 1);
+        display.print("already cleared");
+
+        return;
+    }
+
     if (confirmationEntered) {
         display.clear();
 
@@ -93,6 +104,10 @@ void OSIRiddleApp::onButtonPressed() {
 }
 
 void OSIRiddleApp::onRotaryButtonPressed() {
+    if (isDone()) {
+        return;
+    }
+
     if (!confirmationEntered) {
         confirmationEntered = true;
         scrolling = true;

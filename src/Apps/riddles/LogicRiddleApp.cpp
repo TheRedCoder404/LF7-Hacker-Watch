@@ -39,12 +39,23 @@ void LogicRiddleApp::reset() {
 }
 
 void LogicRiddleApp::loop() {
-    if (scrolling) {
+    if (scrolling && !isDone()) {
         scrollText.loop();
     }
 }
 
 void LogicRiddleApp::onUpdateDisplay(Display &display) {
+    if (isDone()) {
+        display.clear();
+
+        display.setCursor(0, 0);
+        display.print("Logic-Sequence");
+        display.setCursor(0, 1);
+        display.print("already cleared");
+
+        return;
+    }
+
     if (!BinaryRiddleApp::isDone()) {
         display.clear();
 
@@ -104,6 +115,10 @@ void LogicRiddleApp::onButtonPressed() {
 }
 
 void LogicRiddleApp::onRotaryButtonPressed() {
+    if (isDone()) {
+        return;
+    }
+
     if (!confirmationEntered) {
         confirmationEntered = true;
         scrolling = true;

@@ -28,7 +28,7 @@ void WifiCrackApp::reset() {
     disconnectComplete = false;
     disconnectLoadingProgress = 0;
     lastTiming = 0;
-    scrollText.reset()
+    scrollText.reset();
 }
 
 Application &WifiCrackApp::getApp() {

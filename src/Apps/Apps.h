@@ -6,6 +6,7 @@
 #include "SystemAccessApp.h"
 #include "WifiCrackApp.h"
 #include "riddles/BinaryRiddleApp.h"
+#include "riddles/CodeRiddleApp.h"
 #include "riddles/LogicRiddleApp.h"
 #include "riddles/OSIRiddleApp.h"
 
@@ -18,6 +19,7 @@ public:
     static OSIRiddleApp& getOSIRiddle();
     static BinaryRiddleApp& getBinaryRiddle();
     static LogicRiddleApp& getLogicRiddle();
+    static CodeRiddleApp& getCodeRiddle();
 
     static Application **getApps();
     static Application **getHandshakeApps();
@@ -32,6 +34,7 @@ private:
     static OSIRiddleApp osiRiddle;
     static BinaryRiddleApp binaryRiddle;
     static LogicRiddleApp logicRiddle;
+    static CodeRiddleApp codeRiddle;
 
     static Application *apps[];
     static Application *handshakeApps[];

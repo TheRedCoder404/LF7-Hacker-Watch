@@ -10,8 +10,9 @@ SettingsApp Apps::settings = SettingsApp();
 OSIRiddleApp Apps::osiRiddle = OSIRiddleApp();
 BinaryRiddleApp Apps::binaryRiddle = BinaryRiddleApp();
 LogicRiddleApp Apps::logicRiddle = LogicRiddleApp();
+CodeRiddleApp Apps::codeRiddle = CodeRiddleApp();
 Application *Apps::apps[] = {&wifiCrack.getApp(), &handshakeGrabber.getApp(), &systemAccess.getApp(), &settings.getApp()};
-Application *Apps::handshakeApps[] = {&osiRiddle.getApp(), &binaryRiddle.getApp(), &logicRiddle.getApp()};
+Application *Apps::handshakeApps[] = {&osiRiddle.getApp(), &binaryRiddle.getApp(), &logicRiddle.getApp(), &codeRiddle.getApp()};
 
 AppSelector& Apps::getAppSelector() {
     return appSelector;
@@ -39,6 +40,10 @@ BinaryRiddleApp & Apps::getBinaryRiddle() {
 
 LogicRiddleApp & Apps::getLogicRiddle() {
     return logicRiddle;
+}
+
+CodeRiddleApp & Apps::getCodeRiddle() {
+    return codeRiddle;
 }
 
 Application **Apps::getApps() {

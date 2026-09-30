@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Application.h"
-#include "Selector.h"
-#include "Components/Display.h"
 #include "ScrollingString.h"
+#include "Selector.h"
 
-class BinaryRiddleApp {
+class LogicRiddleApp {
 public:
-    BinaryRiddleApp()
-        : app("Bin-Analyser") {
+    LogicRiddleApp()
+        : app("Logi-Analyser") {
         setup();
     }
 
@@ -19,7 +18,7 @@ public:
 private:
     Application app;
     static Selector selector;
-    static const String blockText[6];
+    static const String blockText[7];
     static bool scrolling;
     static bool confirmationEntered;
     static bool selectedYes;

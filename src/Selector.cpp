@@ -2,7 +2,6 @@
 
 #include "Utility.h"
 
-
 int Selector::getCurrentSelected() {
     return scroll;
 }
@@ -37,6 +36,11 @@ void Selector::onScrollDown() {
     if (scroll > viewScroll + 1) {
         scrollViewDown();
     }
+}
+
+void Selector::reset() {
+    scroll = 0;
+    viewScroll = 0;
 }
 
 void Selector::scrollViewUp() {

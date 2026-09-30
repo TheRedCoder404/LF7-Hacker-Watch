@@ -16,6 +16,7 @@ public:
     void onUpdateDisplay(Display& display);
     void onScrollUp();
     void onScrollDown();
+    void reset();
 
 private:
     const String selectedSymbol = "[X]";

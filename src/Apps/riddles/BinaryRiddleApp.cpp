@@ -18,7 +18,17 @@ Application &BinaryRiddleApp::getApp() {
 }
 
 void BinaryRiddleApp::onUpdateDisplay(Display &display) {
-    display.clear();
+    if (!OSIRiddleApp::isDone()) {
+        display.clear();
+
+        display.setCursor(0, 0);
+        display.print("Waiting for");
+        display.setCursor(0, 1);
+        display.print("OSI-Sequence...");
+
+        return;
+    }
+
     selector.onUpdateDisplay(display);
 }
 

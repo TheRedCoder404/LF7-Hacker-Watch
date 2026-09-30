@@ -75,7 +75,6 @@ void AppSelector::onRotaryButtonPressed() {
     Application* selectedApp = Apps::getApps()[scroll];
     if (selectedApp != nullptr) {
         WindowManager::setCurrentApp(*selectedApp);
-        selectedApp->onSelected();
     }
 }
 

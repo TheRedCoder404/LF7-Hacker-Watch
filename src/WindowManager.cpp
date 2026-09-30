@@ -33,6 +33,7 @@ void WindowManager::updateDisplay() {
 void WindowManager::setCurrentApp(Application& app) {
     currentApp = &app;
     currentApp->setDisplay(&display);
+    currentApp->onSelected();
     currentApp->updateDisplay();
 }
 

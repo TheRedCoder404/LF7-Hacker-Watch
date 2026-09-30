@@ -56,7 +56,6 @@ void Application::onButtonReleased() {
 void Application::onSelected() {
     if (m_onSelected != nullptr) {
         m_onSelected();
-        updateDisplay();
     }
 }
 
